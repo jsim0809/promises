@@ -15,22 +15,17 @@ var pluckFirstLineFromFile = function (filePath, callback) {
       callback(null, splitText[0]);
     }
   });
-
-  /*fileStream.on('data', function(data) {
-    fileData += data;
-
-    var lines = fileData.split('\n');
-
-    callback(null, lines[0]);
-
-  });*/
-
-
 };
 
 // This function should retrieve the status code of a GET request to `url`
-var getStatusCode = function (url) {
-  // TODO
+var getStatusCode = function (url, callback) {
+  request(url, (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res.statusCode);
+    }
+  });
 };
 
 // Export these functions so we can test them and reuse them in later exercises

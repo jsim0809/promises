@@ -10,11 +10,21 @@
 
 var fs = require('fs');
 var Promise = require('bluebird');
-
-
+var promiseConstructor = require('./promiseConstructor'); // pluckFirstLineFromFileAsync
+var promisification = require('./promisification'); // getGitHubProfileAsync
 
 var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
-  // TODO
+  return promiseConstructor.pluckFirstLineFromFileAsync(readFilePath)
+    .then((userName) => {
+      return promisification.getGitHubProfileAsync(userName);
+    })
+    .then((profileObj) => {
+      var JSONresponse = JSON.stringify(profileObj);
+      fs.writeFileSync(writeFilePath, JSONresponse);
+    })
+    .catch((error) => {
+      return error;
+    });
 };
 
 // Export these functions so we can test them
